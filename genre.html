@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Genre Movies</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #f9c300;
+      color: #000;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 70px;
+      color: #f9c300;
+    }
+
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 40px;
+    }
+
+    .movie-card {
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .movie-card:hover {
+      transform: scale(1.05);
+    }
+
+    .movie-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .movie-card h3 {
+      margin: 10px;
+    }
+
+    .movie-card p {
+      margin: 0 10px 10px;
+      font-size: 0.9em;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <a href="main.html" class="back-button">← Back to Home</a>
+  <h1 id="genre-title">Movies</h1>
+  <div class="movie-grid" id="movie-container"></div>
+
+  <script>
+    const genre = new URLSearchParams(window.location.search).get('genre') || 'all';
+    document.getElementById('genre-title').textContent = genre.toUpperCase() + ' Movies';
+
+    const allMovies = {
+     //action
+      action: [
+        {
+          title: "Salaar",
+          poster: "salaar2.jpg",
+          description: "A dark and intense story of power and revenge.",
+          year: "2024",
+          rating: "8.5",
+          cast: "Prabhas, Shruti Haasan",
+          director: "Prashanth Neel",
+          ott: "Netflix"
+         
+        },
+        {
+          title: "Pushpa",
+          poster: "pushpa.jpg",
+          description: "A red sandalwood smuggler rises in the underworld.",
+          year: "2021",
+          rating: "8.2",
+          cast: "Allu Arjun, Rashmika Mandanna",
+           director: " Sukumar",
+          ott: "Amazon Prime"
+        },
+        {
+    title: "RRR",
+    poster: "rrr.jpg",
+    description: "Two revolutionaries fight for freedom against British rule.",
+    year: "2022",
+    rating: "8.0",
+    cast: "Ram Charan, N. T. Rama Rao Jr., Alia Bhatt",
+    director: "S. S. Rajamouli",
+    ott: "Netflix"
+  },
+  {
+    title: "Vikram",
+    poster: "vikram.jpg",
+    description: "A special ops squad hunts down a deadly drug cartel.",
+    year: "2022",
+    rating: "8.3",
+    cast: "Kamal Haasan, Vijay Sethupathi, Fahadh Faasil",
+    director: "Lokesh Kanagaraj",
+    ott: "Disney+ Hotstar"
+  },
+  {
+    title: "War",
+    poster: "war.jpg",
+    description: "An Indian soldier is tasked to eliminate his rogue mentor.",
+    year: "2019",
+    rating: "6.5",
+    cast: "Hrithik Roshan, Tiger Shroff",
+    director: "Siddharth Anand",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Baahubali: The Beginning",
+    poster: "baahubali.jpg",
+    description: "A man destined for greatness begins his epic journey.",
+    year: "2015",
+    rating: "8.0",
+    cast: "Prabhas, Anushka Shetty, Rana Daggubati",
+    director: "S. S. Rajamouli",
+    ott: "Netflix"
+  },
+  {
+    title: "Baahubali 2: The Conclusion",
+    poster: "baahubali2.jpg",
+    description: "The son rises to avenge and reclaim his kingdom.",
+    year: "2017",
+    rating: "8.2",
+    cast: "Prabhas, Anushka Shetty, Rana Daggubati",
+    director: "S. S. Rajamouli",
+    ott: "Netflix"
+  },
+  {
+    title: "Saaho",
+    poster: "saaho.jpg",
+    description: "An undercover agent takes on a crime syndicate.",
+    year: "2019",
+    rating: "5.0",
+    cast: "Prabhas, Shraddha Kapoor",
+    director: "Sujeeth",
+    ott: "Netflix"
+  },
+  {
+    title: "Ghazi",
+    poster: "ghazi.jpg",
+    description: "A war submarine thriller set during the 1971 Indo-Pak conflict.",
+    year: "2017",
+    rating: "7.5",
+    cast: "Rana Daggubati, Kay Kay Menon, Atul Kulkarni",
+    director: "Sankalp Reddy",
+    ott: "Zee5"
+  },{
+    title: "Ghajini",
+    poster: "ghajini.jpg",
+    description: "A man with short-term memory loss seeks revenge for the murder of his lover.",
+    year: "2008",
+    rating: "7.3",
+    cast: "Aamir Khan, Asin",
+    director: "A.R. Murugadoss",
+    ott: "Disney+ Hotstar"
+  },
+  {
+  title: "Agent Sai Srinivasa Athreya",
+  poster: "agent.jpg",
+  description: "A brilliant detective stumbles upon a mysterious case of unidentified bodies.",
+  year: "2019",
+  rating: "8.4",
+  cast: "Naveen Polishetty, Shruti Sharma",
+  director: "Swaroop RSJ",
+  ott: "Amazon Prime"
+},
+{
+  title: "Eega",
+  poster: "eega.jpg",
+  description: "A man reincarnates as a housefly to seek revenge on his murderer.",
+  year: "2012",
+  rating: "7.7",
+  cast: "Nani, Sudeep, Samantha Ruth Prabhu",
+  director: "S. S. Rajamouli",
+  ott: "Disney+ Hotstar"
+},
+{
+  title: "Don",
+  poster: "don.jpg",
+  description: "A powerful underworld don is pursued by the police while planning his next move.",
+  year: "2006",
+  rating: "7.2",
+  cast: "Shah Rukh Khan, Priyanka Chopra",
+  director: "Farhan Akhtar",
+  ott: "Netflix"
+},
+{
+  title: "Shershaah",
+  poster: "shershaah.jpg",
+  description: "The story of Captain Vikram Batra’s bravery in the Kargil War.",
+  year: "2021",
+  rating: "8.4",
+  cast: "Sidharth Malhotra, Kiara Advani",
+  director: "Vishnuvardhan",
+  ott: "Amazon Prime"
+},
+{
+  title: "Singham",
+  poster: "singham.jpg",
+  description: "An honest police officer fights corruption in his town.",
+  year: "2011",
+  rating: "6.8",
+  cast: "Ajay Devgn, Kajal Aggarwal",
+  director: "Rohit Shetty",
+  ott: "Disney+ Hotstar"
+},
+{
+  title: "Uri: The Surgical Strike",
+  poster: "uri.jpg",
+  description: "Based on the 2016 surgical strikes by the Indian Army.",
+  year: "2019",
+  rating: "8.2",
+  cast: "Vicky Kaushal, Yami Gautam",
+  director: "Aditya Dhar",
+  ott: "Zee5"
+},
+{
+  title: "Akhanda",
+  poster: "akhanda.jpg",
+  description: "A fierce protector rises to stop evil with spiritual power and justice.",
+  year: "2021",
+  rating: "6.8",
+  cast: "Nandamuri Balakrishna, Pragya Jaiswal",
+  director: "Boyapati Srinu",
+  ott: "Disney+ Hotstar"
+},
+
+  {
+    title: "K.G.F: Chapter 1",
+    poster: "kgf.jpg",
+    description: "A man's rise to dominance in the Kolar Gold Fields.",
+    year: "2018",
+    rating: "8.2",
+    cast: "Yash, Srinidhi Shetty",
+    director: "Prashanth Neel",
+    ott: "Amazon Prime"
+  }
+        
+      ],
+      //comedy
+      comedy: [
+        {
+    title: "Jathi Ratnalu",
+    poster: "jathi rathnalu.jpg",
+    description: "Three innocent but hilarious friends get caught up in a political scam.",
+    year: "2021",
+    rating: "7.8",
+    cast: "Naveen Polishetty, Priyadarshi, Rahul Ramakrishna",
+    director: "Anudeep K.V.",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "F2: Fun and Frustration",
+    poster: "f2.jpg",
+    description: "Two husbands struggle with married life in this laughter-packed family entertainer.",
+    year: "2019",
+    rating: "6.6",
+    cast: "Venkatesh, Varun Tej, Tamannaah, Mehreen",
+    director: "Anil Ravipudi",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Brochevarevarura",
+    poster: "brochevarevarura.jpg",
+    description: "Three friends plan a kidnapping but things go hilariously wrong.",
+    year: "2019",
+    rating: "8.0",
+    cast: "Sree Vishnu, Nivetha Thomas, Priyadarshi",
+    director: "Vivek Athreya",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Ee Nagaraniki Emaindi",
+    poster: "ene.jpg",
+    description: "A gang of friends sets out to make a short film but ends up with endless fun.",
+    year: "2018",
+    rating: "7.9",
+    cast: "Vishwak Sen, Abhinav Gomatam, Sushanth Reddy",
+    director: "Tharun Bhascker",
+    ott: "Netflix"
+  },
+  {
+    title: "Sudigadu",
+    poster: "sudigadu.jpg",
+    description: "A spoof film that parodies many Telugu movie tropes.",
+    year: "2012",
+    rating: "6.9",
+    cast: "Allari Naresh, Monal Gajjar",
+    director: "Bhimaneni Srinivasa Rao",
+    ott: "YouTube"
+  },
+  {
+    title: "Maryada Ramanna",
+    poster: "maryada ramanna.jpg",
+    description: "A man gets trapped in a house where the hosts want to kill him — but only outside the house.",
+    year: "2010",
+    rating: "7.5",
+    cast: "Sunil, Saloni",
+    director: "S. S. Rajamouli",
+    ott: "YouTube"
+  },
+  {
+    title: "Aha Naa Pellanta",
+    poster: "aha naa pellanta.jpg",
+    description: "A comedy of errors around an unexpected marriage situation.",
+    year: "1987",
+    rating: "8.4",
+    cast: "Rajendra Prasad, Kota Srinivasa Rao",
+    director: "Jandhyala",
+    ott: "YouTube"
+  },
+  {
+    title: "Chalo",
+    poster: "chalo.jpg",
+    description: "A college situated on a border between two states becomes the ground for endless fun.",
+    year: "2018",
+    rating: "7.1",
+    cast: "Naga Shaurya, Rashmika Mandanna",
+    director: "Venky Kudumula",
+    ott: "Zee5"
+  },
+  {
+    title: "Bheeshma",
+    poster: "bheeshma.jpg",
+    description: "A man becomes the CEO of an organic company overnight, leading to chaos and romance.",
+    year: "2020",
+    rating: "6.7",
+    cast: "Nithiin, Rashmika Mandanna",
+    director: "Venky Kudumula",
+    ott: "Netflix"
+  },
+  {
+    title: "Venky",
+    poster: "venky.jpg",
+    description: "A group of friends join the police force and get tangled in a murder mystery.",
+    year: "2004",
+    rating: "7.4",
+    cast: "Ravi Teja, Sneha",
+    director: "Srinu Vaitla",
+    ott: "YouTube"
+  },
+  {
+    title: "Manmadhudu",
+    poster: "manmadhudu.jpg",
+    description: "A misogynistic boss falls in love with a woman in unexpected ways.",
+    year: "2002",
+    rating: "7.5",
+    cast: "Nagarjuna, Sonali Bendre",
+    director: "K. Vijaya Bhaskar",
+    ott: "YouTube"
+  },
+  {
+    title: "Kanchana",
+    poster: "kanchana.jpg",
+    description: "A man gets possessed by a ghost, leading to a horror-comedy rollercoaster.",
+    year: "2011",
+    rating: "6.7",
+    cast: "Raghava Lawrence, Sarathkumar",
+    director: "Raghava Lawrence",
+    ott: "Disney+ Hotstar"
+  }
+      ],
+      //romance
+      romance: [
+        {
+    title: "Geetha Govindam",
+    poster: "geetha.jpg",
+    description: "A well-mannered young lecturer gets mistaken for a pervert, leading to funny and romantic chaos.",
+    year: "2018",
+    rating: "7.6",
+    cast: "Vijay Deverakonda, Rashmika Mandanna",
+    director: "Parasuram",
+    ott: "Disney+ Hotstar"
+  },
+  {
+    title: "Tholi Prema",
+    poster: "tholi prema.jpg",
+    description: "A love story that follows the journey of a young man who falls in love at first sight.",
+    year: "2018",
+    rating: "7.3",
+    cast: "Varun Tej, Raashi Khanna",
+    director: "Venky Atluri",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Ye Maaya Chesave",
+    poster: "ye maaya chesave.jpg",
+    description: "A love story between a Hindu boy and a conservative Christian girl in Hyderabad.",
+    year: "2010",
+    rating: "7.7",
+    cast: "Naga Chaitanya, Samantha Ruth Prabhu",
+    director: "Gautham Vasudev Menon",
+    ott: "YouTube"
+  },
+  {
+    title: "Majili",
+    poster: "majili.jpg",
+    description: "A failed cricketer’s journey from heartbreak to healing through an arranged marriage.",
+    year: "2019",
+    rating: "7.2",
+    cast: "Naga Chaitanya, Samantha Ruth Prabhu",
+    director: "Shiva Nirvana",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "100% Love",
+    poster: "100love.jpg",
+    description: "A highly competitive guy and his cousin fall in love amid rivalry and ego clashes.",
+    year: "2011",
+    rating: "7.1",
+    cast: "Naga Chaitanya, Tamannaah Bhatia",
+    director: "Sukumar",
+    ott: "YouTube"
+  },
+  {
+    title: "Ninnu Kori",
+    poster: "ninnu kori.jpg",
+    description: "A love triangle about love, letting go, and finding peace.",
+    year: "2017",
+    rating: "7.6",
+    cast: "Nani, Nivetha Thomas, Aadhi Pinisetty",
+    director: "Shiva Nirvana",
+    ott: "Disney+ Hotstar"
+  },
+  {
+    title: "Sakhi (Alaipayuthey - Dubbed)",
+    poster: "sakhi.jpg",
+    description: "A romantic tale about young love, marriage, and the struggles that come after.",
+    year: "2000",
+    rating: "8.2",
+    cast: "Madhavan, Shalini",
+    director: "Mani Ratnam",
+    ott: "YouTube"
+  },
+  {
+    title: "Kushi",
+    poster: "kushi.jpg",
+    description: "Two college friends with clashing egos fall in love but struggle to accept it.",
+    year: "2001",
+    rating: "7.8",
+    cast: "Pawan Kalyan, Bhumika Chawla",
+    director: "S. J. Suryah",
+    ott: "YouTube"
+  },
+  {
+    title: "Bommarillu",
+    poster: "bommarillu.jpg",
+    description: "A young man struggles between his father's control and his love for a free-spirited girl.",
+    year: "2006",
+    rating: "8.2",
+    cast: "Siddharth, Genelia D’Souza",
+    director: "Bhaskar",
+    ott: "YouTube"
+  },
+  {
+    title: "Oohalu Gusagusalade",
+    poster: "oohalu gusagusalade.jpg",
+    description: "A witty romantic tale about missed chances and rekindled love.",
+    year: "2014",
+    rating: "7.9",
+    cast: "Naga Shaurya, Raashi Khanna",
+    director: "Srinivas Avasarala",
+    ott: "Zee5"
+  },
+  {
+    title: "Darling",
+    poster: "darling.jpg",
+    description: "A guy uses a fake story to escape an arranged marriage and finds love unexpectedly.",
+    year: "2010",
+    rating: "7.3",
+    cast: "Prabhas, Kajal Aggarwal",
+    director: "A. Karunakaran",
+    ott: "YouTube"
+  },
+  {
+    title: "Arya 2",
+    poster: "arya 2.jpg",
+    description: "A twisted love triangle with one-sided obsession, friendship, and sacrifices.",
+    year: "2009",
+    rating: "7.4",
+    cast: "Allu Arjun, Kajal Aggarwal, Navdeep",
+    director: "Sukumar",
+    ott: "YouTube"
+  }
+      ],
+      //thriller
+      thriller: [
+        {
+    title: "Drushyam",
+    poster: "drushyam.jpg",
+    description: "A man uses wit to protect his family from a murder case.",
+    year: "2014",
+    rating: "8.4",
+    cast: "Venkatesh, Meena",
+    director: "Sripriya",
+    ott: "Hotstar"
+  },
+  {
+    title: "Kahaani",
+    poster: "kahaani.jpg",
+    description: "A pregnant woman searches for her missing husband in Kolkata.",
+    year: "2012",
+    rating: "8.1",
+    cast: "Vidya Balan, Parambrata Chatterjee",
+    director: "Sujit Mondal",
+    ott: "Netflix"
+  },
+  {
+    title: "Andhadhun",
+    poster: "andhadhun.jpg",
+    description: "A blind pianist becomes embroiled in a series of mysterious crimes.",
+    year: "2018",
+    rating: "8.3",
+    cast: "Ayushmann Khurrana, Tabu",
+    director: "Sriram Raghavan",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Evaru",
+    poster: "evaru.jpg",
+    description: "A corrupt cop investigates a murder with unexpected twists.",
+    year: "2019",
+    rating: "7.8",
+    cast: "Adivi Sesh, Regina Cassandra",
+    director: "Venkat Ramji",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Badla",
+    poster: "badla.jpg",
+    description: "A successful businesswoman seeks help from a lawyer to prove her innocence.",
+    year: "2019",
+    rating: "7.8",
+    cast: "Taapsee Pannu, Amitabh Bachchan",
+    director: "Sujoy Ghosh",
+    ott: "Netflix"
+  },
+  {
+    title: "Ratsasan",
+    poster: "ratsasan.jpg",
+    description: "A cop hunts a serial killer targeting schoolgirls.",
+    year: "2018",
+    rating: "8.5",
+    cast: "Vishnu Vishal, Amala Paul",
+    director: "Ram Kumar",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Vikram Vedha",
+    poster: "vikram vedha.jpg",
+    description: "A cop chases a notorious gangster, questioning morals and justice.",
+    year: "2017",
+    rating: "8.4",
+    cast: "R. Madhavan, Vijay Sethupathi",
+    director: "Pushkar-Gayathri",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Special 26",
+    poster: "special_26.jpg",
+    description: "A group of con artists executes fake raids on corrupt businessmen.",
+    year: "2013",
+    rating: "8.0",
+    cast: "Akshay Kumar, Anupam Kher",
+    director: "Neeraj Pandey",
+    ott: "Netflix"
+  },
+  {
+    title: "Psycho",
+    poster: "psycho.jpg",
+    description: "A blind man becomes a suspect in a murder investigation.",
+    year: "2020",
+    rating: "7.9",
+    cast: "Aadhi Pinisetty, Nithya Menen",
+    director: "Mysskin",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Ittefaq",
+    poster: "ittefaq.jpg",
+    description: "Two men become suspects in a murder case after a mysterious incident.",
+    year: "2017",
+    rating: "7.0",
+    cast: "Sidharth Malhotra, Sonakshi Sinha",
+    director: "Abhay Chopra",
+    ott: "Netflix"
+  },
+  {
+    title: "Talaash",
+    poster: "talaash.jpg",
+    description: "A cop investigates the mysterious death of a popular actor.",
+    year: "2012",
+    rating: "7.6",
+    cast: "Aamir Khan, Rani Mukerji",
+    director: "Reema Kagti",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Ghazi",
+    poster: "ghazi.jpg",
+    description: "A naval officer fights for survival on a submarine during war.",
+    year: "2017",
+    rating: "7.8",
+    cast: "Rana Daggubati, Atul Kulkarni",
+    director: "Sanjay Bhansali",
+    ott: "Amazon Prime"
+  }
+      ],
+      //drama
+      drama: [
+        {
+    title: "Maya Bazaar",
+    poster: "mayabazaar.jpg",
+    description: "Mythological drama with timeless appeal.",
+    year: "1957",
+    rating: "9.0",
+    cast: "NTR, ANR, Savitri",
+    director: "Kadiri Venkata Reddy",
+    ott: "YouTube"
+  },
+  {
+    title: "Taare Zameen Par",
+    poster: "taare zameen par.jpg",
+    description: "A dyslexic child struggles in school until a new teacher helps him find his way.",
+    year: "2007",
+    rating: "8.4",
+    cast: "Darsheel Safary, Aamir Khan",
+    director: "Aamir Khan",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "The Pursuit of Happyness",
+    poster: "the pursuit of happyness.jpg",
+    description: "A struggling salesman takes custody of his son as he tries to build a better life.",
+    year: "2006",
+    rating: "8.0",
+    cast: "Will Smith, Jaden Smith",
+    director: "Gabriele Muccino",
+    ott: "Netflix"
+  },
+  {
+    title: "Swades",
+    poster: "swades.jpg",
+    description: "An NRI returns to India to find his roots and help his village.",
+    year: "2004",
+    rating: "8.2",
+    cast: "Shah Rukh Khan, Gayatri Joshi",
+    director: "Ashutosh Gowariker",
+    ott: "Netflix"
+  },
+  {
+    title: "Pink",
+    poster: "pink.jpg",
+    description: "Three women fight for justice after a traumatic incident.",
+    year: "2016",
+    rating: "8.1",
+    cast: "Taapsee Pannu, Amitabh Bachchan",
+    director: "Aniruddha Roy Chowdhury",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Barfi!",
+    poster: "barfi.jpg",
+    description: "A charming deaf and mute boy forms a bond with two women.",
+    year: "2012",
+    rating: "8.1",
+    cast: "Ranbir Kapoor, Priyanka Chopra",
+    director: "Anurag Basu",
+    ott: "Netflix"
+  },
+  {
+    title: "A Wednesday",
+    poster: "a wednesday.jpg",
+    description: "A common man plans to teach terrorists a lesson.",
+    year: "2008",
+    rating: "8.1",
+    cast: "Naseeruddin Shah, Anupam Kher",
+    director: "Neeraj Pandey",
+    ott: "Netflix"
+  },
+  {
+    title: "Queen",
+    poster: "queen.jpg",
+    description: "A woman embarks on a solo honeymoon after her wedding is called off.",
+    year: "2013",
+    rating: "8.2",
+    cast: "Kangana Ranaut, Rajkummar Rao",
+    director: "Vikas Bahl",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Chhichhore",
+    poster: "chhichhore.jpg",
+    description: "A father shares life lessons with his son through college memories.",
+    year: "2019",
+    rating: "8.0",
+    cast: "Sushant Singh Rajput, Shraddha Kapoor",
+    director: "Nitesh Tiwari",
+    ott: "Disney+ Hotstar"
+  },
+  {
+    title: "Nil Battey Sannata",
+    poster: "nil battey sannata.jpg",
+    description: "A mother encourages her daughter to pursue education against odds.",
+    year: "2015",
+    rating: "7.8",
+    cast: "Swara Bhaskar, Ratna Pathak Shah",
+    director: "Ashwiny Iyer Tiwari",
+    ott: "Netflix"
+  },
+  {
+    title: "Secret Superstar",
+    poster: "secret superstar.jpg",
+    description: "A young girl dreams of becoming a singer against her conservative family.",
+    year: "2017",
+    rating: "7.9",
+    cast: "Zaira Wasim, Aamir Khan",
+    director: "Advait Chandan",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "October",
+    poster: "october.jpg",
+    description: "A heartfelt story about the relationship between a man and a comatose patient.",
+    year: "2018",
+    rating: "7.5",
+    cast: "Varun Dhawan, Banita Sandhu",
+    director: "Shoojit Sircar",
+    ott: "Amazon Prime"
+  }
+      ],
+      //horror
+      horror: [
+        {
+    title: "Arundhathi",
+    poster: "Arundhathi.jpg",
+    description: "A brave woman faces a terrifying ancestral ghost.",
+    year: "2009",
+    rating: "7.4",
+    cast: "Anushka Shetty, Sonu Sood",
+    director: "Kodi Ramakrishna",
+    ott: "Hotstar"
+  },
+  {
+    title: "Tumbbad",
+    poster: "tumbbad.jpg",
+    description: "A man seeks a hidden treasure but unleashes a dark curse.",
+    year: "2018",
+    rating: "8.3",
+    cast: "Sohum Shah, Jyoti Malshe",
+    director: "Rahi Anil Barve",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Pizza",
+    poster: "pizza.jpg",
+    description: "A pizza delivery boy experiences supernatural events in a haunted house.",
+    year: "2012",
+    rating: "7.2",
+    cast: "Harish Kalyan, Vijay Sethupathi",
+    director: "Karthik Subbaraj",
+    ott: "Netflix"
+  },
+  {
+    title: "Pari",
+    poster: "pari.jpg",
+    description: "A man meets a mysterious woman who brings eerie events into his life.",
+    year: "2018",
+    rating: "6.8",
+    cast: "Anushka Sharma, Parambrata Chatterjee",
+    director: "Prosit Roy",
+    ott: "Netflix"
+  },
+  {
+    title: "Stree",
+    poster: "stree.jpg",
+    description: "A small town is haunted by a spirit who abducts men at night.",
+    year: "2018",
+    rating: "7.6",
+    cast: "Rajkummar Rao, Shraddha Kapoor",
+    director: "Amar Kaushik",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Raat",
+    poster: "raat.jpg",
+    description: "A family experiences strange occurrences after moving into a new house.",
+    year: "1992",
+    rating: "7.1",
+    cast: "Naseeruddin Shah, Revathi",
+    director: "Ram Gopal Varma",
+    ott: "YouTube"
+  },
+  {
+    title: "Bhool Bhulaiyaa",
+    poster: "bhool bhulaiyaa.jpg",
+    description: "A psychiatrist tries to unravel the mystery of a haunted palace.",
+    year: "2007",
+    rating: "7.3",
+    cast: "Akshay Kumar, Vidya Balan",
+    director: "Priyadarshan",
+    ott: "Netflix"
+  },
+  {
+    title: "The House Next Door",
+    poster: "the house next door.jpg",
+    description: "A family faces terrifying supernatural events in their new home.",
+    year: "2017",
+    rating: "6.5",
+    cast: "Rajat Kapoor, Shefali Shah",
+    director: "Milind Rau",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Ghost Stories",
+    poster: "ghost stories.jpg",
+    description: "Anthology of chilling supernatural tales.",
+    year: "2020",
+    rating: "6.8",
+    cast: "Nawazuddin Siddiqui, Janhvi Kapoor",
+    director: "Zoya Akhtar, Anurag Kashyap, Dibakar Banerjee, Karan Johar",
+    ott: "Netflix"
+  },
+  {
+    title: "13B: Fear Has a New Address",
+    poster: "13b.jpg",
+    description: "A family experiences eerie happenings linked to their TV show.",
+    year: "2009",
+    rating: "7.0",
+    cast: "R. Madhavan, Neetu Chandra",
+    director: "Brijesh Singh",
+    ott: "YouTube"
+  },
+  {
+    title: "Ragini MMS",
+    poster: "ragini mms.jpg",
+    description: "A couple stays in a haunted house, capturing paranormal events on tape.",
+    year: "2011",
+    rating: "5.9",
+    cast: "Kainaz Motivala, Rajkummar Rao",
+    director: "Pawan Kripalani",
+    ott: "Amazon Prime"
+  },
+  {
+    title: "Vikram Vedha",
+    poster: "vikram vedha.jpg",
+    description: "A crime thriller with dark, psychological horror elements.",
+    year: "2017",
+    rating: "8.2",
+    cast: "R. Madhavan, Vijay Sethupathi",
+    director: "Pushkar-Gayathri",
+    ott: "Netflix"
+  }
+      ]
+    };
+
+    const movies = allMovies[genre.toLowerCase()] || [];
+
+    const container = document.getElementById("movie-container");
+
+    if (movies.length === 0) {
+      container.innerHTML = "<p>No movies found.</p>";
+    } else {
+      movies.forEach(movie => {
+        const card = document.createElement("div");
+        card.className = "movie-card";
+        card.innerHTML = `
+          <img src="${movie.poster}" alt="${movie.title}" />
+          <h3>${movie.title}</h3>
+          <p>${movie.year} | ⭐ ${movie.rating}</p>
+        `;
+
+        card.addEventListener("click", () => {
+          localStorage.setItem("selectedMovie", JSON.stringify(movie));
+          window.location.href = "movie.html";
+        });
+
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>

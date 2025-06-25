@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .movie-poster {
+      width: 100%;
+      max-height: 500px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      color: #f9c300;
+    }
+
+    .movie-details p {
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+
+    .back-button {
+      display: inline-block;
+      background-color: #f9c300;
+      color: black;
+      padding: 10px 15px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="main.html" class="back-button">← Back to Home</a>
+    <div id="movie-info"></div>
+  </div>
+
+  <script>
+    const apiKey = "d612e0f7"; // Replace with your actual OMDB API key
+    const movieInfoContainer = document.getElementById("movie-info");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get("search");
+
+    function displayMovieDetails(movie) {
+      movieInfoContainer.innerHTML = `
+        <img src="${movie.poster || movie.Poster}" alt="${movie.title || movie.Title}" class="movie-poster" />
+        <h1>${movie.title || movie.Title}</h1>
+        <div class="movie-details">
+          <p><strong>Description:</strong> ${movie.description || movie.Plot || "N/A"}</p>
+          <p><strong>Year:</strong> ${movie.year || movie.Year || "N/A"}</p>
+          <p><strong>Rating:</strong> ${movie.rating || movie.imdbRating || "N/A"}</p>
+          <p><strong>Cast:</strong> ${movie.cast || movie.Actors || "N/A"}</p>
+          <p><strong>Director:</strong> ${movie.director || movie.Director || "N/A"}</p>
+          <p><strong>OTT Platform:</strong> ${movie.ott || "N/A"}</p>
+        </div>
+      `;
+    }
+
+    if (searchQuery) {
+      // OMDB API fetch
+      fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(searchQuery)}&apikey=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.Response === "True") {
+            displayMovieDetails(data);
+          } else {
+            movieInfoContainer.innerHTML = `<p>Movie not found. Please try again.</p>`;
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching from OMDB:", error);
+          movieInfoContainer.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
+        });
+    } else {
+      // Load from localStorage
+      const movie = JSON.parse(localStorage.getItem("selectedMovie"));
+      if (movie) {
+        displayMovieDetails(movie);
+      } else {
+        movieInfoContainer.innerHTML = `<p>No movie selected. Please go back and choose a movie.</p>`;
+      }
+    }
+  </script>
+</body>
+</html>

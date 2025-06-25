@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relax With Movies - Main</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: #fff;
+    }
+
+    header {
+      background-color: #000;
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 3em;
+      color: #f9c300;
+    }
+
+    .about-button {
+      position: absolute;
+      top: 30px;
+      right: 20px;
+      background-color: #f9c300;
+      color: #000;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .search-bar {
+      margin: 20px auto;
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .search-bar input {
+      padding: 10px;
+      width: 80%;
+      font-size: 1.2em;
+      border-radius: 5px;
+      border: 2px solid #f9c300;
+      background-color: #1e1e1e;
+      color: white;
+    }
+
+    .slider {
+      width: 90%;
+      max-width: 800px;
+      margin: 30px auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 1s ease-in-out;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 350px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 24px;
+      padding: 10px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .nav-btn.left {
+      left: 10px;
+    }
+
+    .nav-btn.right {
+      right: 10px;
+    }
+
+    .dots {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 0 5px;
+      background-color: #bbb;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background-color: #f9c300;
+    }
+
+    .section {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #f9c300;
+      text-align: center;
+    }
+
+    .genre-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .genre-card {
+      display: block;
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .genre-card:hover {
+      transform: scale(1.05);
+      background-color: #f9c300;
+      color: #000;
+    }
+
+    .genre-card h3 {
+      margin: 15px 10px 10px;
+      font-size: 1.2em;
+      font-family: 'Cinzel', serif;
+    }
+
+    .genre-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    footer {
+      background-color: #000;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="about.html" class="about-button">About Us</a>
+    <h1>Relax With Movies</h1>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search for movies..." />
+  </div>
+
+  <!-- Slider Section -->
+  <div class="slider">
+    <div class="slides" id="slides">
+      <div class="slide" style="background-image: url('theater\ image.jpg');"></div>
+      <div class="slide" style="background-image: url('mayabazaar.jpg');"></div>
+      <div class="slide" style="background-image: url('hcc\ award.jpg');"></div>
+      <div class="slide" style="background-image: url('savitri.jpg');"></div>
+      <div class="slide" style="background-image: url('bb2.jpg');"></div>
+      <div class="slide" style="background-image: url('theater\ image.jpg');"></div>
+    </div>
+    <button class="nav-btn left" onclick="moveSlide(-1)">❮</button>
+    <button class="nav-btn right" onclick="moveSlide(1)">❯</button>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <!-- Genre Section -->
+  <section class="section">
+    <h2>Select a Genre</h2>
+    <div class="genre-grid">
+      <a href="genre.html?genre=action" class="genre-card">
+        <h3>Action</h3>
+        <img src="salaar2.jpg" alt="Action">
+      </a>
+      <a href="genre.html?genre=comedy" class="genre-card">
+        <h3>Comedy</h3>
+        <img src="jathi rathnalu.jpg" alt="Comedy">
+      </a>
+      <a href="genre.html?genre=romance" class="genre-card">
+        <h3>Romance</h3>
+        <img src="Majili.jpg" alt="Romance">
+      </a>
+      <a href="genre.html?genre=thriller" class="genre-card">
+        <h3>Thriller</h3>
+        <img src="Drushyam.jpg" alt="Thriller">
+      </a>
+      <a href="genre.html?genre=drama" class="genre-card">
+        <h3>Drama</h3>
+        <img src="mayabazaar.jpg" alt="Drama">
+      </a>
+      <a href="genre.html?genre=horror" class="genre-card">
+        <h3>Horror</h3>
+        <img src="Arundhathi.jpg" alt="Horror">
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Relax With Movies. All rights reserved.
+  </footer>
+
+  <!-- Slideshow Script -->
+  <script>
+    let currentIndex = 0;
+    const slides = document.getElementById('slides');
+    const totalSlides = slides.children.length;
+    const dotsContainer = document.getElementById('dots');
+
+    function updateDots() {
+      dotsContainer.innerHTML = "";
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'dot' + (i === currentIndex ? ' active' : '');
+        dot.addEventListener('click', () => moveToSlide(i));
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function moveToSlide(index) {
+      currentIndex = index;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+      updateDots();
+    }
+
+    function moveSlide(step) {
+      currentIndex = (currentIndex + step + totalSlides) % totalSlides;
+      moveToSlide(currentIndex);
+    }
+
+    setInterval(() => {
+      moveSlide(1);
+    }, 3000);
+
+    updateDots();
+
+    // Search redirect logic
+    document.getElementById("search").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        const query = e.target.value.trim();
+        if (query) {
+          window.location.href = `movie.html?search=${encodeURIComponent(query)}`;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

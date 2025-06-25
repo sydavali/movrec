@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Relax With Movies</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: url('bg2.avif') no-repeat center center / cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* moves content to top */
+      align-items: center;
+      text-align: center;
+      padding: 50px 20px 20px;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .hero-content {
+      margin-top: 0;
+    }
+
+    .hero h1 {
+      font-size: 6.5em;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #f9c300;
+    }
+
+    .fancy-r {
+      font-family: 'Great Vibes', cursive;
+      color: red;
+      font-size: 1.3em;
+    }
+
+    .hero p {
+      font-size: 1.3em;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .hero-button {
+      position: absolute;
+      bottom: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #f9c300;
+      backdrop-filter: blur(10px);
+      padding: 15px 35px;
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #f9c300;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: riseUp 1.5s ease forwards;
+    }
+
+    .hero-button:hover {
+      background-color: #f9c300;
+      color: black;
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(249, 195, 0, 0.5);
+    }
+
+    @keyframes riseUp {
+      0% {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1><span class="fancy-r">R</span>elax with Movies</h1>
+      <p>Welcome to a world of movies that will help you unwind and relax.</p>
+    </div>
+    <button class="hero-button" onclick="window.location.href='main.html'">🎞️ Relax Here</button>
+  </section>
+
+</body>
+</html>
